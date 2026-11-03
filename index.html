@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>영상 보기</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #111; color: #eee; font: 16px/1.6 sans-serif; padding: 0 16px; }
+  a { display: inline-block; margin-top: 12px; padding: 12px 20px; border-radius: 8px; background: #e00; color: #fff; text-decoration: none; font-weight: bold; }
+  div { text-align: center; }
+</style>
+</head>
+<body>
+<div>
+  <p>영상을 여는 중입니다…</p>
+  <a id="go" href="https://www.youtube.com/">영상이 안 열리면 눌러 주세요</a>
+</div>
+<script>
+  // 카카오 소식 링크 → 카톡 밖(휴대폰 기본 브라우저/유튜브 앱)에서 쇼츠를 열어 고화질로 보이게 한다.
+  // 카톡 안 브라우저(모바일 웹)는 쇼츠를 저화질로 틀고 화질 메뉴가 없어서.
+  var m = location.search.match(/[?&]v=([\w-]{6,20})/);
+  var yt = m ? 'https://www.youtube.com/shorts/' + m[1] : 'https://www.youtube.com/';
+  document.getElementById('go').href = yt;
+  if (/KAKAOTALK/i.test(navigator.userAgent)) {
+    location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(yt);
+    setTimeout(function () { location.href = 'kakaotalk://inappbrowser/close'; }, 1500);
+  } else {
+    location.replace(yt);
+  }
+</script>
+</body>
+</html>
